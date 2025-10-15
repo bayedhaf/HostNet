@@ -27,11 +27,10 @@ export default function Home() {
     <div className="w-screen min-h-screen flex flex-col bg-gray-50 text-black overflow-x-hidden">
       <Card className="w-full flex flex-col bg-white rounded-none shadow-none">
         
-        {/* Navbar (Sticky top) */}
-        <CardHeader className="bg-zinc-200 flex justify-between items-center text-black p-4 z-50 border-b border-gray-300 sticky top-0">
+      
+        <CardHeader className="bg-zinc-200 flex justify-between p-4 items-center text-black  z-50 border-b border-gray-300 sticky top-0">
           <div className="flex justify-between items-center w-full max-w-7xl mx-auto">
-            
-            {/* Language selector */}
+          
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="text-sm hover:bg-zinc-300">
@@ -51,14 +50,14 @@ export default function Home() {
             </DropdownMenu>
 
          
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-800">HostNet</h1>
+          
 
             <Navbar />
           </div>
         </CardHeader>
 
        
-        <CardContent className="relative w-full flex-1 flex flex-col items-center justify-center text-center p-6">
+        <CardContent className="relative w-full flex-1 flex flex-col items-center justify-center text-center p-0">
       
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
