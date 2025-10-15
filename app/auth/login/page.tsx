@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export default function LoginPage() {
   const [phone, setPhone] = useState("")
@@ -22,9 +23,11 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-pink-50 p-4">
       <div className="flex flex-col items-center space-y-6 w-full max-w-md">
-        {/* Language Selector */}
+ 
         <div className="flex flex-col items-center space-y-2">
-          <span className="text-gray-700 font-medium">Select language / Afaan filadhuu?</span>
+         <span className="text-gray-700 font-medium">
+            {language === "Oromo" ? "Afaan filadhuu?" : "Choose language?"}
+          </span>
           <div className="flex space-x-3">
             <Button
               variant={language === "Oromo" ? "default" : "outline"}
@@ -41,9 +44,9 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Login Card */}
+      
         <Card className="w-full shadow-2xl rounded-xl overflow-hidden">
-          <CardHeader className="bg-indigo-500 text-white text-center py-4">
+          <CardHeader className="bg-green-500 text-white text-center py-4">
             <CardTitle className="text-2xl font-bold">Login</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
@@ -65,19 +68,19 @@ export default function LoginPage() {
                 placeholder={language === "Oromo" ? "Jecha iccitii" : "Password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                 required
               />
-              <Button type="submit" className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold">
+              <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold">
                 {language === "Oromo" ? "Seeni" : "Sign In"}
               </Button>
             </form>
             <div className="mt-4 text-center text-sm text-gray-500">
-              {language === "Oromo" ? (
-                <> Fuula kanaf haaraa yoo tatee ? <span className="text-indigo-500 cursor-pointer">Galmaai</span></>
+            <Link href='/auth/signup'>  {language === "Oromo" ? (
+                <> Fuula kanaf haaraa yoo tatee ? <span className="text-green-500 cursor-pointer">Galmaai</span></>
               ) : (
-                <>Don not have an account? <span className="text-indigo-500 cursor-pointer">Sign Up</span></>
-              )}
+                <>Don not have an account? <span className="text-green-500 cursor-pointer">Sign Up</span></>
+              )}</Link>
             </div>
           </CardContent>
         </Card>
