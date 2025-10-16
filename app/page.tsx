@@ -24,8 +24,8 @@ export default function Home() {
   const [language, setLanguage] = useState("Oromo")
 
   return (
-    <div className="w-screen min-h-screen flex flex-col bg-gray-50 text-black overflow-x-hidden">
-      <Card className="w-full flex flex-col bg-white rounded-none shadow-none">
+    <div className="w-screen min-h-screen  flex flex-col bg-gray-500 text-black overflow-x-hidden">
+      <Card className="w-full flex flex-col gap- bg-white rounded-none shadow-none">
         
       
         <CardHeader className="bg-zinc-200 flex justify-between p-4 items-center text-black  z-50 border-b border-gray-300 sticky top-0">
