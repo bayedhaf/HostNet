@@ -46,7 +46,7 @@ export default function LoginPage() {
 
       
         <Card className="w-full shadow-2xl rounded-xl overflow-hidden">
-          <CardHeader className="bg-green-500 text-white text-center py-4">
+          <CardHeader className="bg-cyan-500 text-white  text-center py-4">
             <CardTitle className="text-2xl font-bold">Login</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
@@ -71,7 +71,7 @@ export default function LoginPage() {
                 className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                 required
               />
-              <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold">
+              <Button type="submit" className="w-full bg-cyan-500 text-white hover:bg-cyan-600  font-semibold">
                 {language === "Oromo" ? "Seeni" : "Sign In"}
               </Button>
             </form>

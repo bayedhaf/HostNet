@@ -52,7 +52,7 @@ export default function SignupPage() {
 
         
         <Card className="w-full shadow-2xl rounded-xl overflow-hidden">
-          <CardHeader className="bg-green-500 text-white text-center py-4">
+          <CardHeader className="bg-cyan-500 text-white  text-center py-4">
             <CardTitle className="text-2xl font-bold">
               {language === "Oromo" ? "Galmee Haaraa" : "Sign Up"}
             </CardTitle>
@@ -87,7 +87,7 @@ export default function SignupPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
-              <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold">
+              <Button type="submit" className="w-full bg-cyan-500 text-white hover:bg-cyan-600  font-semibold">
                 {language === "Oromo" ? "Account Uumi" : "Create Account"}
               </Button>
             </form>

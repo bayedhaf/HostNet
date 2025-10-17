@@ -25,11 +25,11 @@ export default function SideBar() {
   }, []);
 
   const navLinks = [
-    { name: "Dashboard", href: "#", icon: <MdDashboard className="text-xl" /> },
+    { name: "Dashboard", href: "/dashboard", icon: <MdDashboard className="text-xl" /> },
     { name: "Jobs", href: "#", icon: <MdWork className="text-xl" /> },
     { name: "Applicants", href: "/dashboard/application", icon: <MdPeople className="text-xl" /> },
     { name: "Messages", href: "/dashboard/message", icon: <MdMessage className="text-xl" /> },
-    { name: "Settings", href: "#", icon: <MdSettings className="text-xl" /> },
+    { name: "profile", href: "/dashboard/profile", icon: <MdSettings className="text-xl" /> },
   ];
 
   if (!mounted) {
@@ -45,7 +45,7 @@ export default function SideBar() {
   return (
     <>
       
-      <div className="md:hidden flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="md:hidden  flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
         <button
           onClick={() => setOpen(!open)}
           className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition"

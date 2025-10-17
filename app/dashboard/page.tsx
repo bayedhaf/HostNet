@@ -107,7 +107,7 @@ export default function UserDashboard() {
                 <h2 className="font-semibold text-lg">{p.job}</h2>
                 <p className="text-cyan-600 text-sm">{p.definition}</p>
                 <Button className="mt-2 w-full bg-cyan-500 text-white hover:bg-cyan-600 rounded-full">
-                 {language==="Oromo"?"Saffisaan odeeffannoo bal'aa hojjetaa ilaali":"Quicky see employee detail informasion"} 
+                 <Link href="/dashboard/user-application-profile">{language==="Oromo"?"Saffisaan odeeffannoo bal'aa hojjetaa ilaali":"Quicky see employee detail informasion"} </Link>
                 </Button>
               </div>
             </Card>
