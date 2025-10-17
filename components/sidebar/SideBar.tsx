@@ -27,12 +27,11 @@ export default function SideBar() {
   const navLinks = [
     { name: "Dashboard", href: "#", icon: <MdDashboard className="text-xl" /> },
     { name: "Jobs", href: "#", icon: <MdWork className="text-xl" /> },
-    { name: "Applicants", href: "#", icon: <MdPeople className="text-xl" /> },
-    { name: "Messages", href: "#", icon: <MdMessage className="text-xl" /> },
+    { name: "Applicants", href: "/dashboard/application", icon: <MdPeople className="text-xl" /> },
+    { name: "Messages", href: "/dashboard/message", icon: <MdMessage className="text-xl" /> },
     { name: "Settings", href: "#", icon: <MdSettings className="text-xl" /> },
   ];
 
-  // During SSR, render a simplified version without interactive state
   if (!mounted) {
     return (
       <div className="md:hidden flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
