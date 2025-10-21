@@ -21,9 +21,9 @@ export default function AdminDashboard() {
     // });
 
   const recentHires = [
-    { name: "Bayisa Balcha", position: "Web Developer", status: "Hired", date: "Oct 15, 2025" },
-    { name: "Sami Teshome", position: "Graphic Designer", status: "Pending", date: "Oct 14, 2025" },
-    { name: "Muna Daba", position: "Waitress", status: "Hired", date: "Oct 13, 2025" },
+    { name: "Bayisa Balcha", phone: "kitche", status: "full time", address:'adma',date: "Oct 15, 2025" ,emp_id:'emp90' },
+    { name: "Sami Teshome", phone: "kitche", status: "full time", address:'adma',date: "Oct 14, 2025" ,emp_id:'emp90' },
+    { name: "Muna Daba", phone: "Waitress", status: "full time", address:'adma',date: "Oct 13, 2025" ,emp_id:'emp90' },
   ];
 
   return (
@@ -51,31 +51,36 @@ export default function AdminDashboard() {
       {/* Recent Hires Table */}
       <Card className="shadow-md border-cyan-100">
         <CardHeader>
-          <CardTitle className="text-xl font-semibold text-cyan-700">Recent Hires</CardTitle>
+          <CardTitle className="text-xl font-semibold text-cyan-700">Recent Employees</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Position</TableHead>
+                <TableHead>phone</TableHead>
                 <TableHead>Status</TableHead>
+                 <TableHead>Address</TableHead>
                 <TableHead>Date</TableHead>
+                 <TableHead>Emp_Id</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {recentHires.map((hire, index) => (
                 <TableRow key={index} className="hover:bg-cyan-50 transition">
                   <TableCell className="font-medium">{hire.name}</TableCell>
-                  <TableCell>{hire.position}</TableCell>
+                  <TableCell>{hire.phone}</TableCell>
                   <TableCell
                     className={`font-semibold ${
-                      hire.status === "Hired" ? "text-green-600" : "text-yellow-600"
+                      hire.status === "full time" ? "text-green-600" : "text-yellow-600"
                     }`}
                   >
                     {hire.status}
                   </TableCell>
+                     <TableCell>{hire.address}</TableCell>
+                    
                   <TableCell>{hire.date}</TableCell>
+                    <TableCell>{hire.emp_id}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -16,7 +16,7 @@ export default function UserApplicationProfile() {
     avatar: "/ho1.jpg",
     banner: "/hot3.jpg",
     images: ["/ho1.jpg", "/hot3.jpg", "/hot2.jpg", "/hot3.jpg"],
-    phone: "098383883",
+   
     location: "Adama",
     about:
       "I am a dedicated professional with 2 years of experience in hotel service, customer handling, and front-desk management. Passionate about providing quality service and creating memorable guest experiences.",
@@ -84,10 +84,7 @@ export default function UserApplicationProfile() {
           </div>
 
           <div className="bg-gradient-to-r from-cyan-50 to-white shadow-inner rounded-2xl p-6 space-y-2 border border-cyan-100">
-            <p className="text-gray-700">
-              <span className="font-semibold text-cyan-700">📞 Phone:</span>{" "}
-              {user.phone}
-            </p>
+          
             <p className="text-gray-700">
               <span className="font-semibold text-cyan-700">📍 Location:</span>{" "}
               {user.location}

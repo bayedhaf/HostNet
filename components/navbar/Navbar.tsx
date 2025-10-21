@@ -10,12 +10,10 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Find Job", href: "#" },
-    { name: "Find Staff", href: "#" },
     { name: "About Us", href: "#" },
     { name: "Services", href: "#" },
     { name: "Contact", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Careers", href: "#" },
+  
   ];
 
   return (
@@ -23,7 +21,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 h-16">
         
         <div className="flex-shrink-0">
-          <Link href="/" className="text-xl font-bold text-green-600">
+          <Link href="/" className="text-xl font-bold text-cyan-600">
             HostNet
           </Link>
         </div>
@@ -34,7 +32,7 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className="text-gray-700 hover:text-green-600 font-medium transition"
+              className="text-cyan-700 hover:cyan-green-600 font-medium transition"
             >
               {link.name}
             </Link>
@@ -51,7 +49,7 @@ export default function Navbar() {
             </Link>
 
             <Link href="/auth/signup" passHref>
-              <Button className="bg-green-500 text-white hover:bg-green-600 transition">
+              <Button className="bg-cyan-500 text-white hover:bg-cyan-600 transition">
                 Sign Up
               </Button>
             </Link>
@@ -93,7 +91,7 @@ export default function Navbar() {
               </Button>
             </Link>
             <Link href="/auth/signup" passHref>
-              <Button className="bg-green-500 text-white hover:bg-green-600 transition w-full">
+              <Button className="bg-cyan-500 text-white hover:bg-cyan-600 transition w-full">
                 Sign Up
               </Button>
             </Link>

@@ -1,33 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import Footer from "@/components/footer/Footer";
 
 export const metadata: Metadata = {
   title: "Host Net App",
-  description: "This app serve for hotel or restorant service",
+  description: "This app serves hotel or restaurant services",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className="antialiased w-full min-h-screen flex flex-col bg-gray-50">
+     
+        <main className="flex-1 w-full">{children}</main>
+        <Footer/>
       </body>
     </html>
   );

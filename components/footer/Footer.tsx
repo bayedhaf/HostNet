@@ -11,9 +11,14 @@ export default function Footer() {
         <p className="text-sm">
           © {new Date().getFullYear()} <span className="font-semibold text-gray-800">HostNet</span>. All rights reserved.
         </p>
-
+         <div className="">
+          <h3 className="">
+            CO Founder: <strong className="text-cyan-500">Engineer Bayisa</strong> and  <strong className="text-cyan-500">Engineer Girma</strong>
+          </h3>
+         </div>
     
         <div className="flex gap-4 text-sm">
+
           <Link href="#" className="hover:text-green-600 transition">
             Privacy Policy
           </Link>
