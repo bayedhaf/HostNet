@@ -25,6 +25,12 @@ export default function SignupPage() {
     router.push("/dashboard")
     // TODO: send to your backend API for registration
   }
+    // Example API call
+    // await fetch("/api/register", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ ...formData, employerId, employeeId }),
+    // });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-pink-50 p-4">

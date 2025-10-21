@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function UserApplicationProfile() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -20,6 +21,14 @@ export default function UserApplicationProfile() {
     about:
       "I am a dedicated professional with 2 years of experience in hotel service, customer handling, and front-desk management. Passionate about providing quality service and creating memorable guest experiences.",
   };
+  //this data get from api/application
+
+    // Example API call
+    // await fetch("/api/application", {
+    //   method: "Get",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ ...formData, employerId, employeeId }),
+    // });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-cyan-100 py-10 px-4 flex justify-center items-center">
@@ -45,14 +54,13 @@ export default function UserApplicationProfile() {
         </div>
 
        
-        <CardHeader className="text-center mt-16">
-          <CardTitle className="text-3xl font-bold text-cyan-800">
-            {user.name}
-          </CardTitle>
-          <p className="text-gray-500 text-sm tracking-wide mt-1">
-            Employer Profile Detail
-          </p>
-        </CardHeader>
+     <CardHeader className="flex justify-center mt-16">
+  <CardTitle className="text-xl font-bold text-cyan-800 flex items-center gap-2">
+    <span className="text-cyan-700">Name:</span>
+    <span className="text-gray-800">{user.name}</span>
+  </CardTitle>
+      </CardHeader>
+
 
        
         <CardContent className="space-y-8 px-6 pb-10">
@@ -92,9 +100,10 @@ export default function UserApplicationProfile() {
 
       
           <div className="flex justify-center pt-4">
+           <Link href='/dashboard/hire-me'>
             <Button className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold rounded-full shadow-md px-10 py-3 transition-transform hover:scale-105">
               Hire Me
-            </Button>
+            </Button></Link>
           </div>
         </CardContent>
       </Card>

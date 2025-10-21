@@ -9,7 +9,7 @@ import {
   MdWork,
   MdPeople,
   MdMessage,
-  MdSettings,
+
   MdLogout,
   MdAddCircle,
 } from "react-icons/md";
@@ -24,12 +24,18 @@ export default function SideBar() {
     setMounted(true);
   }, []);
 
+    // Example API call
+    // await fetch("/api/register", {
+    //   method: "GET",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ ...formData, employerId, employeeId }),
+    // });
   const navLinks = [
     { name: "Dashboard", href: "/dashboard", icon: <MdDashboard className="text-xl" /> },
-    { name: "Jobs", href: "#", icon: <MdWork className="text-xl" /> },
+    { name: "Jobs", href: "/dashboard/jobs", icon: <MdWork className="text-xl" /> },
     { name: "Applicants", href: "/dashboard/application", icon: <MdPeople className="text-xl" /> },
     { name: "Messages", href: "/dashboard/message", icon: <MdMessage className="text-xl" /> },
-    { name: "profile", href: "/dashboard/profile", icon: <MdSettings className="text-xl" /> },
+ 
   ];
 
   if (!mounted) {

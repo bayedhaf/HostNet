@@ -8,6 +8,14 @@ import { Button } from "@/components/ui/button";
 
 export default function UseApplicationForm() {
   const [language, setLanguage] = useState("Oromo");
+    // this post to api/application route
+
+    // Example API call
+    // await fetch("/api/application", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ ...formData, employerId, employeeId }),
+    // });
 
   return (
     <div className="flex justify-center items-center bg-gradient-to-b from-cyan-50 to-cyan-50 min-h-screen py-8">

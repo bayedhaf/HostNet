@@ -22,13 +22,20 @@ export default function UserDashboard() {
     { job: "Receptionist", definition: "Greet and assist guests upon arrival.", image: "/hot3.jpg" },
     { job: "Chef Assistant", definition: "Support chefs in kitchen operations.", image: "/hot2.jpg" },
   ];
+//this get from api/application
 
+    // Example API call
+    // await fetch("/api/application", {
+    //   method: "GET",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ ...formData, employerId, employeeId }),
+    // });
   const filters = [
-    "Remote",
-    "Within 10 miles",
-    "Date posted",
-    "Experience level",
-    "Salary",
+    "Hotel Waiter",
+    "Cafe waiter",
+    "Restaunt waiter",
+    "Kitchen",
+    "All works",
   ];
 
   return (
