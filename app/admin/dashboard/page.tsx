@@ -4,27 +4,43 @@ import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Users } from "lucide-react";
+import { Users, UserCheck, Clock, CheckCircle } from "lucide-react";
+import { useApp } from "@/lib/context/AppContext";
 
 export default function AdminDashboard() {
-  const stats = [
-    { title: "Total Employers", value: "124", icon: <Users className="text-cyan-600" size={28} /> },
+  const { applications, hireRequests } = useApp();
   
+  const stats = [
+    { 
+      title: "Total Applications", 
+      value: applications.length.toString(), 
+      icon: <Users className="text-cyan-600" size={28} /> 
+    },
+    { 
+      title: "Approved Applications", 
+      value: applications.filter(app => app.status === 'approved').length.toString(), 
+      icon: <CheckCircle className="text-green-600" size={28} /> 
+    },
+    { 
+      title: "Pending Applications", 
+      value: applications.filter(app => app.status === 'pending').length.toString(), 
+      icon: <Clock className="text-yellow-600" size={28} /> 
+    },
+    { 
+      title: "Hire Requests", 
+      value: hireRequests.length.toString(), 
+      icon: <UserCheck className="text-blue-600" size={28} /> 
+    },
   ];
-  //from get from back end api/application
 
-    // Example API call
-    // await fetch("/api/application", {
-    //   method: "GET",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ ...formData, employerId, employeeId }),
-    // });
-
-  const recentHires = [
-    { name: "Bayisa Balcha", phone: "kitche", status: "full time", address:'adma',date: "Oct 15, 2025" ,emp_id:'emp90' },
-    { name: "Sami Teshome", phone: "kitche", status: "full time", address:'adma',date: "Oct 14, 2025" ,emp_id:'emp90' },
-    { name: "Muna Daba", phone: "Waitress", status: "full time", address:'adma',date: "Oct 13, 2025" ,emp_id:'emp90' },
-  ];
+  const recentHires = applications.slice(0, 5).map(app => ({
+    name: app.name,
+    phone: app.phone,
+    status: app.status === 'approved' ? 'approved' : 'pending',
+    address: app.location,
+    date: new Date(app.createdAt).toLocaleDateString(),
+    emp_id: `emp${app.id}`
+  }));
 
   return (
     <div className="p-6 space-y-8 bg-gradient-to-br from-cyan-50 to-white min-h-screen rounded-xl">

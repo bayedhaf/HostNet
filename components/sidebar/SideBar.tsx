@@ -9,27 +9,28 @@ import {
   MdWork,
   MdPeople,
   MdMessage,
-
   MdLogout,
   MdAddCircle,
 } from "react-icons/md";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { useApp } from "@/lib/context/AppContext";
+import { useRouter } from "next/navigation";
 
 export default function SideBar() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { user, logout } = useApp();
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-    // Example API call
-    // await fetch("/api/register", {
-    //   method: "GET",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ ...formData, employerId, employeeId }),
-    // });
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
   const navLinks = [
     { name: "Dashboard", href: "/dashboard", icon: <MdDashboard className="text-xl" /> },
     { name: "Jobs", href: "/dashboard/jobs", icon: <MdWork className="text-xl" /> },
@@ -75,10 +76,14 @@ export default function SideBar() {
             <div className="flex flex-col items-center py-6 border-b border-gray-200 dark:border-gray-700">
               <Avatar className="h-16 w-16 mb-2">
                 <AvatarImage src="/avatar.png" alt="User" />
-                <AvatarFallback>NC</AvatarFallback>
+                <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
               </Avatar>
-              <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">Name</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Role</p>
+              <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+                {user?.name || "Guest User"}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
+                {user?.role || "Employee"}
+              </p>
             </div>
 
             <nav className="flex flex-col gap-2 mt-6 px-4">
@@ -105,15 +110,14 @@ export default function SideBar() {
               </Button>
             </Link>
 
-            <Link href="/">
-              <Button
-                variant="outline"
-                className="w-full border-gray-300 text-white bg-red-500 dark:text-gray-100 hover:bg-red-600 dark:hover:bg-gray-700 flex items-center justify-center gap-2"
-              >
-                <MdLogout className="text-lg" />
-                Logout
-              </Button>
-            </Link>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="w-full border-gray-300 text-white bg-red-500 dark:text-gray-100 hover:bg-red-600 dark:hover:bg-gray-700 flex items-center justify-center gap-2"
+            >
+              <MdLogout className="text-lg" />
+              Logout
+            </Button>
           </div>
         </div>
       </div>

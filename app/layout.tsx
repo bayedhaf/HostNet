@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "@/components/footer/Footer";
+import { AppProvider } from "@/lib/context/AppContext";
 
 export const metadata: Metadata = {
   title: "Host Net App",
@@ -13,9 +14,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased w-full min-h-screen flex flex-col bg-gray-50">
-     
-        <main className="flex-1 w-full">{children}</main>
-        <Footer/>
+        <AppProvider>
+          <main className="flex-1 w-full">{children}</main>
+          <Footer/>
+        </AppProvider>
       </body>
     </html>
   );

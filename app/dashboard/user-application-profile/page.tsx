@@ -1,34 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useApp } from "@/lib/context/AppContext";
+import { useSearchParams } from "next/navigation";
 
-export default function UserApplicationProfile() {
+function UserApplicationProfileContent() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
-  const user = {
+  const { applications } = useApp();
+  const searchParams = useSearchParams();
+  const applicationId = searchParams.get('id');
+  
+  const [user, setUser] = useState({
     id: 90,
     name: "Bontu Gudata",
     avatar: "/ho1.jpg",
     banner: "/hot3.jpg",
     images: ["/ho1.jpg", "/hot3.jpg", "/hot2.jpg", "/hot3.jpg"],
-   
     location: "Adama",
-    about:
-      "I am a dedicated professional with 2 years of experience in hotel service, customer handling, and front-desk management. Passionate about providing quality service and creating memorable guest experiences.",
-  };
-  //this data get from api/application
+    about: "I am a dedicated professional with 2 years of experience in hotel service, customer handling, and front-desk management. Passionate about providing quality service and creating memorable guest experiences.",
+  });
 
-    // Example API call
-    // await fetch("/api/application", {
-    //   method: "Get",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ ...formData, employerId, employeeId }),
-    // });
+  useEffect(() => {
+    if (applicationId) {
+      const foundApplication = applications.find(app => app.id === parseInt(applicationId));
+      if (foundApplication) {
+        setUser({
+          id: foundApplication.id,
+          name: foundApplication.name,
+          avatar: foundApplication.images[0] || "/ho1.jpg",
+          banner: foundApplication.images[1] || "/hot3.jpg",
+          images: foundApplication.images,
+          location: foundApplication.location,
+          about: foundApplication.about,
+        });
+      }
+    }
+  }, [applicationId, applications]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-cyan-100 py-10 px-4 flex justify-center items-center">
@@ -97,7 +109,7 @@ export default function UserApplicationProfile() {
 
       
           <div className="flex justify-center pt-4">
-           <Link href='/dashboard/hire-me'>
+           <Link href={`/dashboard/hire-me?id=${user.id}`}>
             <Button className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold rounded-full shadow-md px-10 py-3 transition-transform hover:scale-105">
               Hire Me
             </Button></Link>
@@ -128,5 +140,13 @@ export default function UserApplicationProfile() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function UserApplicationProfile() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <UserApplicationProfileContent />
+    </Suspense>
   );
 }

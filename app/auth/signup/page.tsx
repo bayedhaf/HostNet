@@ -6,24 +6,47 @@ import { Input } from "@/components/ui/input"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { useApp } from "@/lib/context/AppContext"
 
 export default function SignupPage() {
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [language, setLanguage] = useState("Oromo")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const { language, register } = useApp()
   const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
+    setError("")
+
     if (password !== confirmPassword) {
-      alert(language === "Oromo" ? "Jecha iccitii wal hin gahu" : "Passwords do not match")
+      setError(language === "Oromo" ? "Jecha iccitii wal hin gahu" : "Passwords do not match")
+      setLoading(false)
       return
     }
-    console.log({ name, phone, password })
-    router.push("/dashboard")
-    // TODO: send to your backend API for registration
+
+    if (password.length < 6) {
+      setError(language === "Oromo" ? "Jecha iccitii yeroo 6 caaluu qaba" : "Password must be at least 6 characters")
+      setLoading(false)
+      return
+    }
+
+    try {
+      const success = await register(name, phone, password)
+      if (success) {
+        router.push("/dashboard")
+      } else {
+        setError(language === "Oromo" ? "Galmee uumuu hin dandeenye" : "Failed to create account")
+      }
+    } catch {
+      setError(language === "Oromo" ? "Dogoggora ta'e jira" : "An error occurred")
+    } finally {
+      setLoading(false)
+    }
   }
     // Example API call
     // await fetch("/api/register", {
@@ -35,26 +58,6 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-pink-50 p-4">
       <div className="flex flex-col items-center space-y-6 w-full max-w-md">
-       
-        <div className="flex flex-col items-center space-y-2">
-          <span className="text-gray-700 font-medium">
-            {language === "Oromo" ? "Afaan filadhuu?" : "Choose language?"}
-          </span>
-          <div className="flex space-x-3">
-            <Button
-              variant={language === "Oromo" ? "default" : "outline"}
-              onClick={() => setLanguage("Oromo")}
-            >
-              Afaan Oromo
-            </Button>
-            <Button
-              variant={language === "English" ? "default" : "outline"}
-              onClick={() => setLanguage("English")}
-            >
-              English
-            </Button>
-          </div>
-        </div>
 
         
         <Card className="w-full shadow-2xl rounded-xl overflow-hidden">
@@ -64,6 +67,11 @@ export default function SignupPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6">
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 type="text"
@@ -71,6 +79,7 @@ export default function SignupPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                disabled={loading}
               />
               <Input
                 type="number"
@@ -78,6 +87,7 @@ export default function SignupPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
+                disabled={loading}
               />
               <Input
                 type="password"
@@ -85,6 +95,7 @@ export default function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                disabled={loading}
               />
               <Input
                 type="password"
@@ -92,9 +103,17 @@ export default function SignupPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                disabled={loading}
               />
-              <Button type="submit" className="w-full bg-cyan-500 text-white hover:bg-cyan-600  font-semibold">
-                {language === "Oromo" ? "Account Uumi" : "Create Account"}
+              <Button 
+                type="submit" 
+                className="w-full bg-cyan-500 text-white hover:bg-cyan-600 font-semibold"
+                disabled={loading}
+              >
+                {loading 
+                  ? (language === "Oromo" ? "Uumaa jira..." : "Creating Account...") 
+                  : (language === "Oromo" ? "Account Uumi" : "Create Account")
+                }
               </Button>
             </form>
             <div className="mt-4 text-center text-sm text-gray-500">

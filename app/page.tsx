@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "@/components/navbar/Navbar";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,9 +12,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useApp } from "@/lib/context/AppContext";
 
 export default function Home() {
-  const [language, setLanguage] = useState("Oromo");
+  const { language, setLanguage } = useApp();
 
   return (
     <div className="w-screen min-h-screen flex flex-col bg-gray-500 text-black overflow-x-hidden">

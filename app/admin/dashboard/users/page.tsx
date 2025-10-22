@@ -14,7 +14,15 @@ import {
 import { Button } from "@/components/ui/button";
 
 export default function UserData() {
-  const [hireData, setHireData] = useState<any[]>([]);
+  const [hireData, setHireData] = useState<Array<{
+    id: string;
+    name: string;
+    phone: string;
+    address: string;
+    status: string;
+    date: string;
+    emp_id: string;
+  }>>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -35,22 +43,22 @@ export default function UserData() {
       setTimeout(() => {
         setHireData([
           {
-            _id: "EMP233",
-            employerName: "John Doe",
+            id: "1",
+            name: "John Doe",
+            phone: "0912345678",
+            address: "Adama, near ASTU",
             status: "Full Time",
-            address: "Adama, Ethiopia",
-            empId: "EMP233",
-            hirePhone: "0912345678",
-            hireAddress: "Adama, near ASTU",
+            date: new Date().toLocaleDateString(),
+            emp_id: "EMP233",
           },
           {
-            _id: "EMP102",
-            employerName: "Marta Kebede",
+            id: "2",
+            name: "Marta Kebede",
+            phone: "0909876543",
+            address: "Addis Ababa, Bole",
             status: "Part Time",
-            address: "Addis Ababa",
-            empId: "EMP102",
-            hirePhone: "0909876543",
-            hireAddress: "Addis Ababa, Bole",
+            date: new Date().toLocaleDateString(),
+            emp_id: "EMP102",
           },
         ]);
         setLoading(false);
@@ -74,7 +82,7 @@ export default function UserData() {
 
       // Simulate delete
       setTimeout(() => {
-        setHireData((prev) => prev.filter((item) => item._id !== id));
+        setHireData((prev) => prev.filter((item) => item.id !== id));
         setDeletingId(null);
         alert("Record deleted successfully!");
       }, 600);
@@ -137,31 +145,31 @@ export default function UserData() {
               <TableBody>
                 {hireData.map((item) => (
                   <TableRow
-                    key={item._id}
+                    key={item.id}
                     className="hover:bg-cyan-50/70 transition-colors"
                   >
                     <TableCell className="font-medium text-gray-800">
-                      {item.employerName}
+                      {item.name}
                     </TableCell>
                     <TableCell className="text-gray-700">{item.status}</TableCell>
                     <TableCell className="text-gray-700">{item.address}</TableCell>
                     <TableCell className="text-right text-gray-700">
-                      {item.empId}
+                      {item.emp_id}
                     </TableCell>
                     <TableCell className="text-right text-gray-700">
-                      {item.hirePhone}
+                      {item.phone}
                     </TableCell>
                     <TableCell className="text-right text-gray-700">
-                      {item.hireAddress}
+                      {item.date}
                     </TableCell>
                     <TableCell className="text-right">
                       <Button
                         variant="destructive"
                         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
-                        onClick={() => handleDelete(item._id)}
-                        disabled={deletingId === item._id}
+                        onClick={() => handleDelete(item.id)}
+                        disabled={deletingId === item.id}
                       >
-                        {deletingId === item._id ? "Deleting..." : "Delete"}
+                        {deletingId === item.id ? "Deleting..." : "Delete"}
                       </Button>
                     </TableCell>
                   </TableRow>
