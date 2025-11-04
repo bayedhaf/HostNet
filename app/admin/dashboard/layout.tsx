@@ -15,7 +15,7 @@ export default function AdminDashboardLayout({
   const navLinks = [
     { name: "Dashboard", href: "/admin/dashboard", icon: <LayoutDashboard size={18} /> },
     { name: "Users", href: "/admin/dashboard/users", icon: <Users size={18} /> },
- 
+    { name: "Applications", href: "/admin/dashboard/application", icon: <Users size={18} /> },
   ];
 
   return (

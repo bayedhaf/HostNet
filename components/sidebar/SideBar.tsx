@@ -5,13 +5,14 @@ import React, { useState, useEffect } from "react";
 import {
   MdMenu,
   MdClose,
-  MdDashboard,
+ 
   MdWork,
-  MdPeople,
+
   MdMessage,
   MdLogout,
   MdAddCircle,
 } from "react-icons/md";
+import { FaArrowsDownToPeople } from "react-icons/fa6";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { useApp } from "@/lib/context/AppContext";
@@ -32,9 +33,9 @@ export default function SideBar() {
     router.push("/");
   };
   const navLinks = [
-    { name: "Dashboard", href: "/dashboard", icon: <MdDashboard className="text-xl" /> },
+    { name: "Employees", href: "/dashboard", icon: <FaArrowsDownToPeople className="text-xl" /> },
     { name: "Jobs", href: "/dashboard/jobs", icon: <MdWork className="text-xl" /> },
-    { name: "Applicants", href: "/dashboard/application", icon: <MdPeople className="text-xl" /> },
+
     { name: "Messages", href: "/dashboard/message", icon: <MdMessage className="text-xl" /> },
  
   ];
@@ -74,6 +75,7 @@ export default function SideBar() {
        
           <div>
             <div className="flex flex-col items-center py-6 border-b border-gray-200 dark:border-gray-700">
+             <Link href='/dashboard/clientprofile'>
               <Avatar className="h-16 w-16 mb-2">
                 <AvatarImage src="/avatar.png" alt="User" />
                 <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
@@ -84,6 +86,7 @@ export default function SideBar() {
               <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
                 {user?.role || "Employee"}
               </p>
+             </Link>
             </div>
 
             <nav className="flex flex-col gap-2 mt-6 px-4">
