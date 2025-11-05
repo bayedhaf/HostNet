@@ -19,7 +19,7 @@ export default function AdminDashboardLayout({
   ];
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-cyan-50 via-white to-cyan-100">
+  <div className="min-h-screen flex bg-linear-to-br from-cyan-50 via-white to-cyan-100">
       {/* Sidebar */}
       <aside
         className={`fixed md:static inset-y-0 left-0 z-40 w-64 bg-white/90 backdrop-blur-lg border-r border-cyan-200 shadow-lg transform ${

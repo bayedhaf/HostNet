@@ -1,67 +1,68 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { useApp } from "@/lib/context/AppContext"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useApp } from "@/lib/context/AppContext";
 
 export default function SignupPage() {
-  const [name, setName] = useState("")
-  const [phone, setPhone] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const { language, register } = useApp()
-  const router = useRouter()
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const { language } = useApp();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
+    // Validation
     if (password !== confirmPassword) {
-      setError(language === "Oromo" ? "Jecha iccitii wal hin gahu" : "Passwords do not match")
-      setLoading(false)
-      return
+      setError(language === "Oromo" ? "Jecha iccitii wal hin gahu" : "Passwords do not match");
+      setLoading(false);
+      return;
     }
 
     if (password.length < 6) {
-      setError(language === "Oromo" ? "Jecha iccitii yeroo 6 caaluu qaba" : "Password must be at least 6 characters")
-      setLoading(false)
-      return
+      setError(language === "Oromo" ? "Jecha iccitii yeroo 6 caaluu qaba" : "Password must be at least 6 characters");
+      setLoading(false);
+      return;
     }
 
     try {
-      const success = await register(name, phone, password)
-      if (success) {
-        router.push("/dashboard")
-      } else {
-        setError(language === "Oromo" ? "Galmee uumuu hin dandeenye" : "Failed to create account")
-      }
-    } catch {
-      setError(language === "Oromo" ? "Dogoggora ta'e jira" : "An error occurred")
+      // POST to /api/register
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || "Registration failed");
+
+      // Success — redirect to dashboard
+      router.push("/dashboard");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : (language === "Oromo" ? "Dogoggora ta'e jira" : "An error occurred");
+      setError(message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
-    // Example API call
-    // await fetch("/api/register", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ ...formData, employerId, employeeId }),
-    // });
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-pink-50 p-4">
+  <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-50 via-white to-pink-50 p-4">
       <div className="flex flex-col items-center space-y-6 w-full max-w-md">
-
-        
         <Card className="w-full shadow-2xl rounded-xl overflow-hidden">
-          <CardHeader className="bg-cyan-500 text-white  text-center py-4">
+          <CardHeader className="bg-cyan-500 text-white text-center py-4">
             <CardTitle className="text-2xl font-bold">
               {language === "Oromo" ? "Galmee Haaraa" : "Sign Up"}
             </CardTitle>
@@ -105,29 +106,28 @@ export default function SignupPage() {
                 required
                 disabled={loading}
               />
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full bg-cyan-500 text-white hover:bg-cyan-600 font-semibold"
                 disabled={loading}
               >
-                {loading 
-                  ? (language === "Oromo" ? "Uumaa jira..." : "Creating Account...") 
-                  : (language === "Oromo" ? "Account Uumi" : "Create Account")
-                }
+                {loading
+                  ? language === "Oromo" ? "Uumaa jira..." : "Creating Account..."
+                  : language === "Oromo" ? "Account Uumi" : "Create Account"}
               </Button>
             </form>
             <div className="mt-4 text-center text-sm text-gray-500">
-             <Link href='/auth/login'>
-              {language === "Oromo" ? (
-                <>Fuula kana duraa yoo qabatan ? <span className="text-purple-500 cursor-pointer">Seeni</span></>
-              ) : (
-                <>Already have an account? <span className="text-purple-500 cursor-pointer">Login</span></>
-              )}
-             </Link>
+              <Link href="/auth/login">
+                {language === "Oromo" ? (
+                  <>Fuula kana duraa yoo qabatan? <span className="text-purple-500 cursor-pointer">Seeni</span></>
+                ) : (
+                  <>Already have an account? <span className="text-purple-500 cursor-pointer">Login</span></>
+                )}
+              </Link>
             </div>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+  );
 }

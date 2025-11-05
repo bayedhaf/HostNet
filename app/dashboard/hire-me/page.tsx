@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,22 +18,58 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useApp } from "@/lib/context/AppContext";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useApp } from "@/lib/context/AppContext";
 
 function HireMeContent() {
-  const { addHireRequest, user, applications, language } = useApp();
+  const { language, user } = useApp();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const employeeIdParam = searchParams.get('id');
-  const employee = applications.find(a => a.id === Number(employeeIdParam)) || null;
-  const [formData, setFormData] = useState({
-    phone: "",
-    address: "",
-  });
+  const employeeIdParam = searchParams.get("id");
 
+  type Application = {
+    id: number;
+    name: string;
+    status: string;
+    location: string;
+  };
+
+  const [employee, setEmployee] = useState<Application | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [formData, setFormData] = useState({ phone: "", address: "" });
+
+  // Fetch employee data and prefill phone number
+  useEffect(() => {
+    const fetchEmployee = async () => {
+      try {
+        const [resApplications, resUser] = await Promise.all([
+          fetch("/api/application"),
+          fetch(`/api/register/${user?.id}`) // Fetch logged-in user data
+        ]);
+
+        const applicationsData: Application[] = await resApplications.json();
+        const employeeData = applicationsData.find(
+          (a: Application) => a.id === Number(employeeIdParam)
+        );
+        if (!employeeData) {
+          setError(language === "Oromo" ? "Namichi hin argamne" : "Employee not found");
+          setEmployee(null);
+        } else {
+          setEmployee(employeeData);
+        }
+
+        const userData = await resUser.json();
+        if (userData?.phone) {
+          setFormData((prev) => ({ ...prev, phone: userData.phone })); // Prefill phone
+        }
+      } catch {
+        setError(language === "Oromo" ? "Dogoggora jira" : "Error fetching data");
+      }
+    };
+
+    fetchEmployee();
+  }, [employeeIdParam, user?.id, language]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,50 +77,51 @@ function HireMeContent() {
     setError("");
 
     if (!formData.phone || !formData.address) {
-      setError("Phone number and address are required");
+      setError(language === "Oromo" ? "Lakkobsa bilbila fi iddoo barbaachisa" : "Phone number and address are required");
       setLoading(false);
       return;
     }
 
     try {
-      if (!employee) {
-        setError("Employee not found");
-        setLoading(false);
-        return;
-      }
-
-      // Add hire request to context (first fetch employee by id, then post)
-      addHireRequest({
-        employerName: user?.name || "Unknown Employer",
-        employerPhone: formData.phone,
-        employerAddress: formData.address,
-        employeeId: employee.id,
-        employeeName: employee.name,
-        status: "pending"
+      const res = await fetch("/api/hire-me", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          employerName: user?.name || "Unknown Employer",
+          employerPhone: formData.phone,
+          employerAddress: formData.address,
+          employeeId: employee?.id,
+          employeeName: employee?.name,
+          status: "pending",
+        }),
       });
 
-      alert("Hire request submitted successfully!");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Submission failed");
+
+      alert(language === "Oromo" ? "Gaaffiin hojii ergameera!" : "Hire request submitted!");
       setFormData({ phone: "", address: "" });
       router.push("/dashboard");
-
-    } catch {
-      setError("An error occurred while submitting the request");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : (language === "Oromo" ? "Dogoggora jira" : "An error occurred");
+      setError(message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50 via-white to-cyan-100 p-6">
+    <section className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-50 via-white to-cyan-100 p-6">
       <Card className="w-full max-w-3xl bg-white/80 backdrop-blur-lg shadow-xl border border-cyan-200 hover:shadow-cyan-200/50 transition-all duration-300 rounded-2xl">
         <CardHeader className="text-center border-b border-cyan-100 pb-4">
           <CardTitle className="text-2xl font-semibold text-cyan-700">
-            {language === "Oromo" 
-              ? "Foormii kana guutuu namicha kana hojjechisuuf" 
-              : "Fill this form to"
-            } <span className="font-bold text-cyan-600">
+            {language === "Oromo"
+              ? "Foormii kana guutuu namicha kana hojjechisuuf"
+              : "Fill this form to"}{" "}
+            <span className="font-bold text-cyan-600">
               {language === "Oromo" ? "Hojjechisi" : "Hire"}
-            </span> {language === "Oromo" ? "namicha kana" : "this person"}
+            </span>{" "}
+            {language === "Oromo" ? "namicha kana" : "this person"}
           </CardTitle>
         </CardHeader>
 
@@ -94,29 +131,34 @@ function HireMeContent() {
               {error}
             </div>
           )}
-          <div className="overflow-x-auto rounded-lg border border-cyan-100 mb-6">
-          <Table>
-              <TableCaption className="text-cyan-600">
-                Employer Information Overview
-              </TableCaption>
-              <TableHeader>
-                <TableRow className="bg-cyan-50">
-                  <TableHead className="min-w-[120px] text-cyan-700">Employer Name</TableHead>
-                  <TableHead className="text-cyan-700">Status</TableHead>
-                  <TableHead className="text-cyan-700">Employer Address</TableHead>
-                  <TableHead className="text-right text-cyan-700">Emp_ID</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow className="hover:bg-cyan-50 transition-colors">
-                  <TableCell className="font-medium text-gray-800">{employee?.name || "Unknown"}</TableCell>
-                  <TableCell className="text-gray-700">{employee ? (employee.status === 'approved' ? 'Approved' : 'Pending') : '-'}</TableCell>
-                  <TableCell className="text-gray-700">{employee?.location || '-'}</TableCell>
-                  <TableCell className="text-right text-gray-700">Emp{employee?.id ?? '-'}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+
+          {employee && (
+            <div className="overflow-x-auto rounded-lg border border-cyan-100 mb-6">
+              <Table>
+                <TableCaption className="text-cyan-600">
+                  {language === "Oromo" ? "Dhaabbilee Hojii" : "Employee Information Overview"}
+                </TableCaption>
+                <TableHeader>
+                  <TableRow className="bg-cyan-50">
+                    <TableHead className="min-w-[120px] text-cyan-700">
+                      {language === "Oromo" ? "Maqaa Hojjetaa" : "Employee Name"}
+                    </TableHead>
+                    <TableHead className="text-cyan-700">{language === "Oromo" ? "Haala" : "Status"}</TableHead>
+                    <TableHead className="text-cyan-700">{language === "Oromo" ? "Iddoo" : "Location"}</TableHead>
+                    <TableHead className="text-right text-cyan-700">Emp_ID</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow className="hover:bg-cyan-50 transition-colors">
+                    <TableCell className="font-medium text-gray-800">{employee.name}</TableCell>
+                    <TableCell className="text-gray-700">{employee.status === "approved" ? "Approved" : "Pending"}</TableCell>
+                    <TableCell className="text-gray-700">{employee.location}</TableCell>
+                    <TableCell className="text-right text-gray-700">Emp{employee.id}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div>
@@ -127,9 +169,7 @@ function HireMeContent() {
                 type="number"
                 placeholder="Enter your phone number"
                 value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 required
                 disabled={loading}
                 className="w-full border-cyan-200 focus-visible:ring-cyan-400"
@@ -144,9 +184,7 @@ function HireMeContent() {
                 type="text"
                 placeholder="Write your address..."
                 value={formData.address}
-                onChange={(e) =>
-                  setFormData({ ...formData, address: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 required
                 disabled={loading}
                 className="w-full border-cyan-200 focus-visible:ring-cyan-400"
@@ -155,13 +193,16 @@ function HireMeContent() {
 
             <Button
               type="submit"
-              disabled={loading}
+              disabled={loading || !employee}
               className="w-full sm:w-auto self-center bg-cyan-600 hover:bg-cyan-500 text-white font-semibold shadow-md hover:shadow-cyan-300 transition-all duration-300 mt-4 rounded-xl px-6 py-2"
             >
-              {loading 
-                ? (language === "Oromo" ? "Dhiyeessaa jira..." : "Submitting...") 
-                : (language === "Oromo" ? "Dhiyeessi" : "Submit")
-              }
+              {loading
+                ? language === "Oromo"
+                  ? "Dhiyeessaa jira..."
+                  : "Submitting..."
+                : language === "Oromo"
+                ? "Dhiyeessi"
+                : "Submit"}
             </Button>
           </form>
         </CardContent>

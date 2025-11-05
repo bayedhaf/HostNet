@@ -24,14 +24,14 @@ export default function Home() {
         <Navbar />
       </div>
 
-      <section className="relative  mt-16 w-full flex-1 flex flex-col items-center justify-center text-center pt-[80px]">
+  <section className="relative  mt-16 w-full flex-1 flex flex-col items-center justify-center text-center pt-20">
        
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/hot3.jpg')" }}
         />
        
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/40 via-black/30 to-black/60 " />
+  <div className="absolute inset-0 w-full h-full bg-linear-to-b from-black/40 via-black/30 to-black/60 " />
 
     
         <div className="absolute top-6 right-6 z-50 bg-cyan-600">
@@ -75,7 +75,7 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/auth/signup" className="w-full sm:w-auto">
-              <Button className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-8 py-4 font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200">
+              <Button className="w-full bg-linear-to-r from-cyan-500 to-cyan-600 text-white px-8 py-4 font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200">
                 {language === "Oromo" ? "Galmaa’i" : "Sign Up"}
               </Button>
             </Link>
